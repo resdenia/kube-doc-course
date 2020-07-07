@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec: #describe how exactly deployment suppose to be behive
+  replicas: 1 # only one single pod running
+  selector: #howto
+    matchLabels: #howto
+      app: client
+  template: #describes how every pod was created and manage by this deployment
+    metadata: #howto
+      labels: #how to the deployment is going to find the set of pods that suppose to manage then on the same level
+        app: client
+    spec: #descipbe how every pod should behave (we want to declare some of the container section in that pod)
+      containers:
+        - name: client
+          image: resdeni/client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  selector: # how service is going to find the pods that it is suppose to  start pod
+    app: client
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

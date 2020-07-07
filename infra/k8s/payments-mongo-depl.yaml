@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-mongo-depl
+spec:
+  replicas: 1
+  #selector is how deployment find a pod
+  selector:
+    matchLabels:
+      app: payments-mongo
+  template:
+    metadata:
+      labels:
+        app: payments-mongo
+    spec:
+      containers:
+        - name: payments-mongo
+          # image staing in docker hub referes to image  what is create
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-mongo-srv
+spec:
+  #that selector telling service wjich pods itis goint to access to
+  selector:
+    app: payments-mongo
+  ports:
+    # that name we put for logging porposes
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
